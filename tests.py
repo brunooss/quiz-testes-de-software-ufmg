@@ -83,3 +83,22 @@ def test_choice_is_incorrect_flag():
     question = Question(title='Pergunta')
     question.add_choice('Alternativa', False)
     assert not question.choices[0].is_correct
+
+
+### exemplo de fixture:
+
+@pytest.fixture
+def question_with_choices():
+    question = Question(title='Pergunta com escolhas')
+    question.add_choice('errou1', False)
+    question.add_choice('UHUL', True)
+    question.add_choice('errou2', False)
+    return question
+
+def test_question_with_choices_count(question_with_choices):
+    assert len(question_with_choices.choices) == 3
+
+def test_question_with_choices_correct_choice(question_with_choices):
+    correct_choices = [c for c in question_with_choices.choices if c.is_correct]
+    assert len(correct_choices) == 1
+    assert correct_choices[0].text == 'UHUL'
